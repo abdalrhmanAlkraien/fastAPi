@@ -13,6 +13,7 @@ the library will find here,
 6- uvicorn[standard] to expose port and access from outside and the standered for install extra plugin like Http tools
 7- asynpg for postgrs driver
 8- alembic for migration database
+9-  psycopg2-binary
 
 
 ### Create enviroment for project

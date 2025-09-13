@@ -4,3 +4,4 @@ asyncpg
 sqlalchemy
 databases
 alembic
+psycopg2-binary
