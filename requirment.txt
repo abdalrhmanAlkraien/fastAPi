@@ -1,0 +1,6 @@
+fastAPI
+uvicorn[standerd]
+asyncpg
+sqlalchemy
+databases
+alembic
