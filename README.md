@@ -14,6 +14,7 @@ the library will find here,
 7- asynpg for postgrs driver
 8- alembic for migration database
 9-  psycopg2-binary
+10- dependency-injector
 
 
 ### Create enviroment for project

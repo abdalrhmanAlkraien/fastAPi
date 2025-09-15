@@ -1,0 +1,1 @@
+db.connection.string = "postgresql+psycopg2://username:password@localhost:3306/book_db"
