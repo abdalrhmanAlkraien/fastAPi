@@ -34,11 +34,11 @@ class Container(containers.DeclarativeContainer):
 
     db_session = providers.Factory(SessionLocal)
 
-    auth_service = providers.Singleton(AuthorService)
-    category_service = providers.Singleton(CategoryService)
-    book_service = providers.Singleton(BookService)
-
     book_repository = providers.Factory(BookRepository, db_session)
     author_repository = providers.Factory(AuthorRepository, db_session)
     category_repository = providers.Factory(CategoryRepository, db_session)
+
+    auth_service = providers.Singleton(AuthorService, author_repository)
+    category_service = providers.Singleton(CategoryService, category_repository)
+    book_service = providers.Singleton(BookService, book_repository)
 
