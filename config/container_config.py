@@ -1,4 +1,6 @@
 from dependency_injector import containers, providers
+
+from models.base import Base
 from service.book_service import BookService
 from service.author_service import AuthorService
 from service.category_service import CategoryService
@@ -20,20 +22,22 @@ class Container(containers.DeclarativeContainer):
 
     config_file = providers.Configuration(yaml_files=["config.yml"])
 
+    print(config_file.db.connection.string)
 
     engine = providers.Singleton(create_engine,
-                                 config_file.db.connection.string,
+                                 "postgresql+psycopg2://admin:admin@localhost:5432/py_db",
                                  pool_pre_ping=True)
 
-    SessionLocal = providers.Singleton(
-        sessionmaker,
+    sessionLocal = sessionmaker(
         autocommit=False,
         autoflush=False,
-        bind=engine
+        bind=engine()
     )
 
-    db_session = providers.Factory(SessionLocal)
+    Base.metadata.create_all(bind=engine())
 
+    # db_session = providers.Factory(sessionLocal) // wrong way
+    db_session = providers.Factory(sessionLocal) # correct way
     book_repository = providers.Factory(BookRepository, db_session)
     author_repository = providers.Factory(AuthorRepository, db_session)
     category_repository = providers.Factory(CategoryRepository, db_session)

@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  py_postgres:
+    image: postgres:15
+    container_name: py-postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: py_db
+    volumes:
+      - ./data/py_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - py-service
+
+volumes:
+  postgres_data:
+
+networks:
+  py-service:
+    driver: bridge
