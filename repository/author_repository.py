@@ -5,8 +5,7 @@ from error.RepositoryError import RepositoryError
 from models.author_model import AuthorModel as Author, AuthorModel
 from typing import Any
 
-from schema.request.AuthorRequest import AuthorRequest
-
+import logging as log
 
 class AuthorRepository:
 
@@ -21,6 +20,7 @@ class AuthorRepository:
             self.db_session.refresh(author)
         except SQLAlchemyError as e:
             self.db_session.rollback()
+            log.error(e)
             raise RepositoryError(f"Failed to create author: {e}") from e
 
     def update_author(self, author_id, new_val: AuthorModel) -> type[Author] | None:
@@ -40,6 +40,7 @@ class AuthorRepository:
                 return author
             except SQLAlchemyError as e:
                 self.db_session.rollback()
+                log.error(e)
                 raise RepositoryError(f"Failed to update author: {e}") from e
 
     def delete_author(self, author_id: int) -> None:
@@ -55,6 +56,7 @@ class AuthorRepository:
                 return None
             except SQLAlchemyError as e:
                 self.db_session.rollback()
+                log.error(e)
                 raise RepositoryError(f"Failed to delete author: {e}") from e
 
     def get_author_by_id(self, author_id) -> type[AuthorModel] | None:

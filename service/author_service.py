@@ -1,35 +1,38 @@
-from dependency_injector.wiring import inject
-
 from error.RepositoryError import RepositoryError
 from models.author_model import AuthorModel as Author
 from repository.author_repository import AuthorRepository
 from schema.request.AuthorRequest import AuthorRequest
 from schema.response.AuthorResponse import AuthorResponse
-
+import logging as log
 
 class AuthorService:
     def __init__(self, author_repository: AuthorRepository):
         self.author_repository = author_repository
 
     def create_author(self, authorRequest:AuthorRequest):
+        log.info("create author")
         author = Author()
         for key, value in authorRequest.model_dump().items():
             setattr(author, key, value)
         self.author_repository.create_author(author)
 
     def delete_author(self, author_id:int):
+        log.info("delete author")
         self.author_repository.delete_author(author_id)
 
     def update_author(self, author_id: int, data:AuthorRequest):
+        log.info("update author")
         author = Author()
         for key, value in data.model_dump().items():
             setattr(author, key, value)
         self.author_repository.update_author(author_id, author)
 
     def find_author_by_name(self, name:str):
+        log.info("find author")
         return self.author_repository.get_author_by_name(name)
 
     def find_author_by_id(self, author_id:int):
+        log.info("find author by id")
         author = self.author_repository.get_author_by_id(author_id)
 
         if author is None:
@@ -42,6 +45,7 @@ class AuthorService:
         )
 
     def find_all_author(self) -> list[AuthorResponse]:
+        log.info("find all author")
         author_list =  self.author_repository.find_all_author()
         response = []
 
