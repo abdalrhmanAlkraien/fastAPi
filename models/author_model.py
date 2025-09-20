@@ -1,16 +1,12 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from models.base import Base
-from models.book_model import BookModel
 
 
 class AuthorModel(Base):
     __tablename__ = 'authors'
-    name = Column(String, primary_key=True)
+    author_id = Column(Integer, primary_key=True)
+    name = Column(String)
     age = Column(Integer)
-    books = list[BookModel]
-
-    def __init(self, name, age, books):
-        self.name = name
-        self.age = age
-        self.books = books
+    books = relationship("BookModel", back_populates="author", cascade="all, delete-orphan")

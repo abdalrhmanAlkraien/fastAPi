@@ -18,14 +18,13 @@ async def create_author(authorRequest:AuthorRequest, author_service:Annotated[
     author_service.create_author(authorRequest)
     return {"Message": "Created"}
 
-@router.get("/author/{author_id")
+@router.get("/author/{author_id}")
 @inject
 async def get_author(author_id: int, author_service:Annotated[
     AuthorService,
     Depends(Provide[Container.auth_service])
 ]):
-    author_service.get_author(author_id)
-    return {"Message": "Author"}
+    return author_service.find_author_by_id(author_id)
 
 @router.get("/authors")
 @inject
