@@ -1,3 +1,4 @@
+from error.HttpError import NotFoundError
 from error.RepositoryError import RepositoryError
 from models.author_model import AuthorModel as Author
 from repository.author_repository import AuthorRepository
@@ -36,7 +37,7 @@ class AuthorService:
         author = self.author_repository.get_author_by_id(author_id)
 
         if author is None:
-            raise RepositoryError(f"Failed to find author with id: {author_id}")
+            raise NotFoundError(f"Failed to find author with id: {author_id}")
         else:
             return AuthorResponse(
                 author_id=author.author_id,

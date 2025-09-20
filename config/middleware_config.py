@@ -6,7 +6,6 @@ import uuid
 from fastapi import HTTPException, FastAPI
 from starlette.requests import Request
 from starlette.responses import JSONResponse
-
 from config.logger.log import log_request, log_error
 import logging
 
@@ -59,3 +58,10 @@ def setup_middlewares(app: FastAPI):
             logging.error(traceback.format_exc())
             response = log_error(req_id, {"error_message": e.__str__()})
             return JSONResponse(status_code=500, content=response)
+
+    @app.exception_handler(HTTPException)
+    async def handle_http_exception(request: Request, exc: HTTPException):
+        req_id = getattr(request.state, "request_id", "unknown")
+        response = log_error(req_id, {"error_message": exc.__str__()})
+        return JSONResponse(status_code=exc.status_code, content=response)
+
